@@ -2,22 +2,15 @@ package com.example.cordova.camera;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class CordovaCameraWithFrame extends CordovaPlugin {
 
@@ -34,18 +27,18 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
         return false;
     }
 
-private void openCamera() {
-    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
-        cordova.startActivityForResult(this, cameraIntent, CAMERA_REQUEST);
-        
-        // Add logic to draw frame overlay on camera preview
-        FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
-        cordova.getActivity().addContentView(frameOverlay, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-    } else {
-        callbackContext.error("Camera not available");
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
+            cordova.startActivityForResult(this, cameraIntent, CAMERA_REQUEST);
+
+            // Add logic to draw frame overlay on camera preview
+            FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
+            cordova.getActivity().addContentView(frameOverlay, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        } else {
+            callbackContext.error("Camera not available");
+        }
     }
-}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
