@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -35,8 +35,18 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
             public void run() {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
+                    FrameLayout rootView = new FrameLayout(cordova.getActivity());
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    rootView.setLayoutParams(params);
+
+                    // Add FrameOverlayView to root view
                     FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
-                    cordova.getActivity().addContentView(frameOverlay, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    rootView.addView(frameOverlay);
+
+                    // Set root view as content view
+                    cordova.getActivity().setContentView(rootView);
+
+                    // Start camera intent
                     cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
                 } else {
                     callbackContext.error("Camera not available");
