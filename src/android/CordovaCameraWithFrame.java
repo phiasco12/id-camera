@@ -29,31 +29,31 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
         return false;
     }
 
-    private void openCamera() {
-        cordova.getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
-                    FrameLayout rootView = new FrameLayout(cordova.getActivity());
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                    rootView.setLayoutParams(params);
+private void openCamera() {
+    cordova.getActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
+                // Obtain the root view of the Cordova activity
+                ViewGroup rootView = cordova.getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
 
-                    // Add FrameOverlayView to root view
-                    FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
-                    rootView.addView(frameOverlay);
+                // Create FrameOverlayView
+                FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                frameOverlay.setLayoutParams(params);
 
-                    // Set root view as content view
-                    cordova.getActivity().setContentView(rootView);
+                // Add FrameOverlayView to root view
+                rootView.addView(frameOverlay);
 
-                    // Start camera intent
-                    cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
-                } else {
-                    callbackContext.error("Camera not available");
-                }
+                // Start camera intent
+                cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
+            } else {
+                callbackContext.error("Camera not available");
             }
-        });
-    }
+        }
+    });
+}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
