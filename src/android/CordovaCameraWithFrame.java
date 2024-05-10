@@ -34,14 +34,18 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
         return false;
     }
 
-    private void openCamera() {
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
-            cordova.startActivityForResult(this, cameraIntent, CAMERA_REQUEST);
-        } else {
-            callbackContext.error("Camera not available");
-        }
+private void openCamera() {
+    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
+        cordova.startActivityForResult(this, cameraIntent, CAMERA_REQUEST);
+        
+        // Add logic to draw frame overlay on camera preview
+        FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
+        cordova.getActivity().addContentView(frameOverlay, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    } else {
+        callbackContext.error("Camera not available");
     }
+}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
