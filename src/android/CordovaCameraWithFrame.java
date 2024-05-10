@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -66,5 +68,29 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
         photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArrayImage = baos.toByteArray();
         return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
+    }
+
+    // Define FrameOverlayView class here
+    private static class FrameOverlayView extends View {
+
+        public FrameOverlayView(android.content.Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onDraw(android.graphics.Canvas canvas) {
+            super.onDraw(canvas);
+
+            // Draw a basic frame overlay (red rectangle) on the canvas
+            android.graphics.Paint paint = new android.graphics.Paint();
+            paint.setColor(android.graphics.Color.RED);
+            paint.setStyle(android.graphics.Paint.Style.STROKE);
+            paint.setStrokeWidth(5);
+            int left = 100;
+            int top = 100;
+            int right = 500;
+            int bottom = 500;
+            canvas.drawRect(left, top, right, bottom, paint);
+        }
     }
 }
