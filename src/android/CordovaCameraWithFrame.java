@@ -1,3 +1,5 @@
+package com.example.cordova.camera;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
@@ -58,4 +60,3 @@ public class CordovaCameraWithoutFrame extends CordovaPlugin {
         return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
     }
 }
-
