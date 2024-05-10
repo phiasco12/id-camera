@@ -36,16 +36,21 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
             public void run() {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
-                    // Obtain the root view of the Cordova activity
-                    ViewGroup rootView = cordova.getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
+                    // Create a new FrameLayout to hold both camera preview and frame overlay
+                    FrameLayout frameLayout = new FrameLayout(cordova.getActivity());
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    frameLayout.setLayoutParams(layoutParams);
 
                     // Create FrameOverlayView
                     FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
                     FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
                     frameOverlay.setLayoutParams(params);
 
-                    // Add FrameOverlayView to root view
-                    rootView.addView(frameOverlay);
+                    // Add FrameOverlayView to FrameLayout
+                    frameLayout.addView(frameOverlay);
+
+                    // Set FrameLayout as content view
+                    cordova.getActivity().setContentView(frameLayout);
 
                     // Start camera intent
                     cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
