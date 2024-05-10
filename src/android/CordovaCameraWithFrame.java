@@ -1,12 +1,9 @@
-package com.example.cordova.camera;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import org.apache.cordova.CallbackContext;
@@ -15,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class CordovaCameraWithFrame extends CordovaPlugin {
 
@@ -36,54 +32,31 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // Create a new FrameLayout to hold both camera preview and frame overlay
-                FrameLayout parentLayout = new FrameLayout(cordova.getActivity());
-                FrameLayout.LayoutParams parentParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                parentLayout.setLayoutParams(parentParams);
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
+                    // Create a new FrameLayout to hold both camera preview and frame overlay
+                    FrameLayout frameLayout = new FrameLayout(cordova.getActivity());
+                    FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    frameLayout.setLayoutParams(layoutParams);
 
-                // Create SurfaceView for camera preview
-                SurfaceView surfaceView = new SurfaceView(cordova.getActivity());
-                FrameLayout.LayoutParams surfaceParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                surfaceView.setLayoutParams(surfaceParams);
+                    // Create FrameOverlayView
+                    FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                    frameOverlay.setLayoutParams(params);
 
-                // Add SurfaceView to parent layout
-                parentLayout.addView(surfaceView);
+                    // Add FrameOverlayView to FrameLayout
+                    frameLayout.addView(frameOverlay);
 
-                // Create FrameLayout for frame overlay
-                FrameLayout frameLayout = new FrameLayout(cordova.getActivity());
-                FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                frameLayout.setLayoutParams(frameParams);
+                    // Set FrameLayout as content view
+                    cordova.getActivity().setContentView(frameLayout);
 
-                // Create FrameOverlayView
-                FrameOverlayView frameOverlay = new FrameOverlayView(cordova.getActivity());
-                FrameLayout.LayoutParams overlayParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-                frameOverlay.setLayoutParams(overlayParams);
-
-                // Add FrameOverlayView to FrameLayout
-                frameLayout.addView(frameOverlay);
-
-                // Add FrameLayout to parent layout
-                parentLayout.addView(frameLayout);
-
-                // Set parent layout as content view
-                cordova.getActivity().setContentView(parentLayout);
-
-                // Start camera preview
-                startCameraPreview(surfaceView.getHolder());
+                    // Start camera intent
+                    cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
+                } else {
+                    callbackContext.error("Camera not available");
+                }
             }
         });
-    }
-
-    private void startCameraPreview(SurfaceHolder holder) {
-        try {
-            // Open camera and set preview display
-            Camera camera = Camera.open();
-            camera.setDisplayOrientation(90);
-            camera.setPreviewDisplay(holder);
-            camera.startPreview();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -115,7 +88,7 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
     }
 
     // Define FrameOverlayView class here
-    private static class FrameOverlayView extends android.view.View {
+    private static class FrameOverlayView extends View {
 
         public FrameOverlayView(android.content.Context context) {
             super(context);
@@ -137,4 +110,4 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
             canvas.drawRect(left, top, right, bottom, paint);
         }
     }
-}
+} 
