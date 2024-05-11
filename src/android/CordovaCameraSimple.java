@@ -5,10 +5,12 @@ import android.provider.MediaStore;
 import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import com.squareup.picasso.Picasso;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
+import java.io.IOException;
 
 public class CordovaCameraSimple extends CordovaPlugin {
 
@@ -40,7 +42,8 @@ public class CordovaCameraSimple extends CordovaPlugin {
 
                     // Add ImageView programmatically
                     ImageView imageView = new ImageView(cordova.getActivity());
-                    imageView.setImageResource(R.drawable.your_image); // Replace with your image resource
+                    String imageUrl = "https://t4.ftcdn.net/jpg/01/07/24/39/360_F_107243962_93O8mMEWlLU1mGgEdwS0dIv37fbLWfaV.jpg"; // Replace with your image URL
+                    Picasso.get().load(imageUrl).into(imageView);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                     cordova.getActivity().addContentView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
