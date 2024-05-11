@@ -13,4 +13,3 @@
         <source-file src="src/android/CordovaCameraSimple.java" target-dir="com/example/cordova/camera" />
     </platform>
 </plugin>
-
