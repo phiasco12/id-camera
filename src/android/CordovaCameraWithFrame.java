@@ -1,14 +1,11 @@
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.provider.MediaStore;
-import android.util.Base64;
+package com.example.cordova.camera;
 
+import android.content.Intent;
+import android.provider.MediaStore;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.io.ByteArrayOutputStream;
 
 public class CordovaCameraWithFrame extends CordovaPlugin {
 
@@ -43,18 +40,9 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST && resultCode == cordova.getActivity().RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            String encodedImage = encodeImage(photo); 
-            callbackContext.success(encodedImage);
+            callbackContext.success("Photo captured successfully");
         } else {
             callbackContext.error("Failed to capture photo");
         }
-    }
-
-    private String encodeImage(Bitmap photo) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] byteArrayImage = baos.toByteArray();
-        return Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
     }
 }
