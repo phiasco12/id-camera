@@ -10,7 +10,7 @@ import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 
-public class CordovaCameraSimple extends CordovaPlugin {
+public class CordovaCameraWithFrame extends CordovaPlugin {
 
     private static final int CAMERA_REQUEST = 1;
     private CallbackContext callbackContext;
