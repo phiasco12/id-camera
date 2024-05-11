@@ -11,5 +11,8 @@
             </feature>
         </config-file>
         <source-file src="src/android/CordovaCameraSimple.java" target-dir="com/example/cordova/camera" />
+        <!-- Add Picasso library dependency -->
+        <framework src="com.squareup.picasso:picasso:2.71828" />
     </platform>
 </plugin>
+
