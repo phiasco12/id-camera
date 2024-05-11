@@ -1,18 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-camera-with-frame" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
-    <name>Cordova Camera With Frame</name>
-    <description>A Cordova plugin to open camera with frame overlay and capture photos within the frame.</description>
-    <license>MIT</license>
-    <keywords>cordova, camera, frame, capture</keywords>
-    <js-module src="www/cordova-camera-with-frame.js" name="CordovaCameraWithFrame">
-        <clobbers target="window.plugins.cordovaCameraWithFrame" />
+<plugin id="cordova-camera-simple" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+    <name>CordovaCameraSimple</name>
+    <js-module src="www/CordovaCameraSimple.js" name="CordovaCameraSimple">
+        <clobbers target="CordovaCameraSimple" />
     </js-module>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="CordovaCameraWithFrame">
-                <param name="android-package" value="com.example.cordova.camera.CordovaCameraWithFrame" />
+            <feature name="CordovaCameraSimple">
+                <param name="android-package" value="com.example.cordova.camera.CordovaCameraSimple" />
             </feature>
         </config-file>
-        <source-file src="src/android/CordovaCameraWithFrame.java" target-dir="src/com/example/cordova/camera" />
+        <source-file src="src/android/CordovaCameraSimple.java" target-dir="com/example/cordova/camera" />
     </platform>
 </plugin>
+
