@@ -40,16 +40,16 @@ public class CordovaCameraSimple extends CordovaPlugin {
                     // Add TextureView to the content view
                     cordova.getActivity().setContentView(textureView);
 
+                    // Start camera intent
+                    cordova.startActivityForResult(CordovaCameraSimple.this, cameraIntent, CAMERA_REQUEST);
+
                     // Add ImageView programmatically
                     ImageView imageView = new ImageView(cordova.getActivity());
-                    String imageUrl = "https://t4.ftcdn.net/jpg/01/07/24/39/360_F_107243962_93O8mMEWlLU1mGgEdwS0dIv37fbLWfaV.jpg"; // Replace with your image URL
+                    String imageUrl = "https://example.com/your_image.png"; // Replace with your image URL
                     Picasso.get().load(imageUrl).into(imageView);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                     imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                     cordova.getActivity().addContentView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                    // Start camera intent
-                    cordova.startActivityForResult(CordovaCameraSimple.this, cameraIntent, CAMERA_REQUEST);
                 } else {
                     callbackContext.error("Camera not available");
                 }
