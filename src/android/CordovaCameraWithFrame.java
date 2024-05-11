@@ -31,7 +31,7 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
             public void run() {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
-                    cordova.startActivityForResult(CordovaCameraSimple.this, cameraIntent, CAMERA_REQUEST);
+                    cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
                 } else {
                     callbackContext.error("Camera not available");
                 }
