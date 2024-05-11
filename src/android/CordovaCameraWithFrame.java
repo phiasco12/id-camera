@@ -7,7 +7,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class CordovaCameraWithFrame extends CordovaPlugin {
+public class CordovaCameraSimple extends CordovaPlugin {
 
     private static final int CAMERA_REQUEST = 1;
     private CallbackContext callbackContext;
@@ -28,7 +28,7 @@ public class CordovaCameraWithFrame extends CordovaPlugin {
             public void run() {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (cameraIntent.resolveActivity(cordova.getActivity().getPackageManager()) != null) {
-                    cordova.startActivityForResult(CordovaCameraWithFrame.this, cameraIntent, CAMERA_REQUEST);
+                    cordova.startActivityForResult(CordovaCameraSimple.this, cameraIntent, CAMERA_REQUEST);
                 } else {
                     callbackContext.error("Camera not available");
                 }
